@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'CartController.dart';
-import 'CartPage.dart';
+import 'DetailPage.dart';
 
 class ProductPage extends StatelessWidget {
   final _shoeName = [
@@ -31,54 +31,6 @@ class ProductPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Products'),
-        actions: <Widget>[
-          //the red circle
-          Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Container(
-                height: 150.0,
-                width: 30.0,
-                child: InkWell(
-                  splashColor: Colors.redAccent,
-                  highlightColor: Colors.blueAccent.withOpacity(0.5),
-                  onTap: () {
-                    Get.to(() => CartPage());
-                  },
-                  child: Stack(
-                    children: <Widget>[
-                      IconButton(
-                        icon: Icon(
-                          Icons.shopping_cart,
-                          color: Colors.white,
-                        ),
-                        onPressed: null,
-                      ),
-                      Positioned(
-                          child: Stack(
-                        children: <Widget>[
-                          Icon(Icons.brightness_1,
-                              size: 20.0, color: Colors.red[700]),
-                          Positioned(
-                              top: 3.0,
-                              right: 7,
-                              child: Center(
-                                child: Obx(
-                                  () => Text(
-                                    cartController.count.toString(),
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 12.0,
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                                ),
-                              )),
-                        ],
-                      )),
-                    ],
-                  ),
-                )),
-          )
-        ],
       ),
       body: ListView.builder(
         itemCount: 6,
@@ -159,7 +111,9 @@ class ProductPage extends StatelessWidget {
               Icons.add_circle,
               color: Colors.black,
             ),
-            onPressed: null,
+            onPressed: () {
+              Get.to(() => DetailPage());
+            },
           ),
         ],
       ),
