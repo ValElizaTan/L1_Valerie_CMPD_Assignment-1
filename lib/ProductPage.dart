@@ -38,7 +38,7 @@ class ProductPage extends StatelessWidget {
           return InkWell(
             splashColor: Colors.blueAccent,
             highlightColor: Colors.blueAccent.withOpacity(1.0),
-            onTap: () {
+            /* onTap: () {
               cartController.addToCart(index);
               Get.to(
                 () => DetailPage(
@@ -47,7 +47,7 @@ class ProductPage extends StatelessWidget {
                   imageName: _shoeName[index],
                 ),
               );
-            },
+            }, */
             child: _buildGridCards(index, 'images/shoe_${index + 1}.jpg',
                 _shoeName[index], _shoePrice[index]),
           );

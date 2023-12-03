@@ -18,6 +18,8 @@ class DetailPage extends StatefulWidget {
 
 class _DetailPageState extends State<DetailPage> {
   List<bool> isSelected = [false, true, false, false, false]; // Selection state
+  bool isSizeSelected = false; // Track if size is selected
+  bool isQuantitySelected = false; // Track if quantity is selected
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +48,11 @@ class _DetailPageState extends State<DetailPage> {
                         Icons.shopping_cart,
                         color: Colors.white,
                       ),
-                      onPressed: null,
+                      onPressed: isSizeSelected && isQuantitySelected
+                          ? () {
+                              Get.to(() => CartPage());
+                            }
+                          : null,
                     ),
                     Positioned(
                       right: -3,
@@ -86,6 +92,8 @@ class _DetailPageState extends State<DetailPage> {
           SizedBox(
             height: 30,
           ),
+
+          //Image
           Container(
             alignment: Alignment.center,
             child: Hero(
@@ -109,6 +117,8 @@ class _DetailPageState extends State<DetailPage> {
               ),
             ),
           ),
+
+          //ShoeSize
           Container(
             margin: const EdgeInsets.only(top: 20),
             child: Row(
@@ -141,7 +151,7 @@ class _DetailPageState extends State<DetailPage> {
                           buttonIndex++) {
                         isSelected[buttonIndex] = buttonIndex == index;
                       }
-                      // Handle size selection here if needed
+                      isSizeSelected = true; // Update size selection status
                     });
                   },
                   fillColor: Colors.blue,
@@ -150,6 +160,59 @@ class _DetailPageState extends State<DetailPage> {
                     minHeight: 40.0,
                     minWidth: 40.0,
                   ),
+                ),
+              ],
+            ),
+          ),
+
+          //Quantity
+          Container(
+            margin: const EdgeInsets.only(top: 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: EdgeInsets.all(10),
+                  child: Text(
+                    'Quantity:',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+                IconButton(
+                  icon: Icon(Icons.add),
+                  onPressed: () {
+                    // Add the currently selected item to the cart when the add button is pressed
+                    cartController.addToCart(
+                        widget.imageName, 1); // Add 1 to the quantity
+                    setState(() {
+                      isQuantitySelected =
+                          true; // Update quantity selection status
+                    });
+                  },
+                ),
+                Padding(
+                  padding: EdgeInsets.all(8),
+                  child: Obx(
+                    () {
+                      final quantity = cartController.cart[widget.imageName];
+                      return Text(
+                        (quantity ?? 0)
+                            .toString(), // Display 0 if quantity is null
+                      );
+                    },
+                  ),
+                ),
+                IconButton(
+                  icon: Icon(Icons.remove),
+                  onPressed: () {
+                    // Remove the currently selected item from the cart when the remove button is pressed
+                    cartController.clear(widget
+                        .imageName); // Use the same unique identifier used for adding the item
+                  },
                 ),
               ],
             ),

@@ -9,13 +9,21 @@ class CartController extends GetxController {
   int get count => _cart.length > 0 ? _cart.values.reduce((a, b) => a + b) : 0;
 
   //business logic
-  void addToCart(index) {
+  void addToCart(String itemName, int quantity) {
+    if (_cart.containsKey(itemName)) {
+      _cart[itemName] += quantity;
+    } else {
+      _cart[itemName] = quantity;
+    }
+  }
+  
+  /* void addToCart(index) {
     if (_cart.containsKey(index)) {
       _cart[index] += 1;
     } else {
       _cart[index] = 1;
     }
-  }
+  } */
 
   void clear(index) {
     if (_cart.containsKey(index)) {
