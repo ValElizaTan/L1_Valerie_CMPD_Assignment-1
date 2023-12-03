@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
       title: 'Shopping Cart',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(primarySwatch: Colors.blue),
-      home: DetailPage(),
+      home: ProductPage(),
     );
   }
 }

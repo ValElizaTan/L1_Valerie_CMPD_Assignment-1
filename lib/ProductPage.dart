@@ -40,6 +40,13 @@ class ProductPage extends StatelessWidget {
             highlightColor: Colors.blueAccent.withOpacity(1.0),
             onTap: () {
               cartController.addToCart(index);
+              Get.to(
+                () => DetailPage(
+                  imageTag: 'shoeImage$index', // Pass the tag to DetailPage
+                  imagePath: 'images/shoe_${index + 1}.jpg',
+                  imageName: _shoeName[index],
+                ),
+              );
             },
             child: _buildGridCards(index, 'images/shoe_${index + 1}.jpg',
                 _shoeName[index], _shoePrice[index]),
@@ -59,35 +66,38 @@ class ProductPage extends StatelessWidget {
       ),
       child: Row(
         children: [
-          //Image
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Container(
-              height: 140,
-              width: 150,
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage(imgPath),
-                    fit: BoxFit.fitWidth,
-                  ),
-                  borderRadius: BorderRadius.circular(12),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black38,
-                      offset: const Offset(
-                        2.0,
-                        2.0,
+          //Image with Hero animation
+          Hero(
+            tag: 'shoeImage$index',
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                height: 140,
+                width: 150,
+                decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage(imgPath),
+                      fit: BoxFit.fitWidth,
+                    ),
+                    borderRadius: BorderRadius.circular(12),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black38,
+                        offset: const Offset(
+                          2.0,
+                          2.0,
+                        ),
+                        blurRadius: 5.0,
+                        spreadRadius: 1.0,
                       ),
-                      blurRadius: 5.0,
-                      spreadRadius: 1.0,
-                    ),
-                    BoxShadow(
-                      color: Colors.white,
-                      offset: const Offset(0.0, 0.0),
-                      blurRadius: 0.0,
-                      spreadRadius: 0.0,
-                    ),
-                  ]),
+                      BoxShadow(
+                        color: Colors.white,
+                        offset: const Offset(0.0, 0.0),
+                        blurRadius: 0.0,
+                        spreadRadius: 0.0,
+                      ),
+                    ]),
+              ),
             ),
           ),
           Spacer(),
@@ -112,7 +122,13 @@ class ProductPage extends StatelessWidget {
               color: Colors.black,
             ),
             onPressed: () {
-              Get.to(() => DetailPage());
+              Get.to(
+                () => DetailPage(
+                  imageTag: 'shoeImage$index', // Pass the tag to DetailPage
+                  imagePath: 'images/shoe_${index + 1}.jpg',
+                  imageName: _shoeName[index],
+                ),
+              );
             },
           ),
         ],
