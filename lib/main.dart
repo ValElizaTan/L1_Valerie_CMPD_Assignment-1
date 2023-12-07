@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'DetailPage.dart';
 import 'ProductPage.dart';
 
 void main() {
