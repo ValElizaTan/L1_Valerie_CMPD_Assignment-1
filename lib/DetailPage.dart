@@ -186,10 +186,13 @@ class _DetailPageState extends State<DetailPage> {
                   icon: Icon(Icons.add),
                   onPressed: () {
                     if (selectedSizeIndex != null) {
-                      // Check if a size is selected
                       // Add item to cart
                       cartController.addToCart(
-                          widget.imageName, selectedSizeIndex, 1);
+                          widget.imageName,
+                          selectedSizeIndex,
+                          1,
+                          widget
+                              .imagePath); 
                       setState(() {
                         isQuantitySelected = true;
                       });
@@ -213,7 +216,6 @@ class _DetailPageState extends State<DetailPage> {
                   icon: Icon(Icons.remove),
                   onPressed: () {
                     if (selectedSizeIndex != null) {
-                      // Check if a size is selected
                       // Remove 1 item from cart
                       cartController.clear(widget.imageName, selectedSizeIndex);
                     }

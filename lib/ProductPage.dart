@@ -121,7 +121,7 @@ class ProductPage extends StatelessWidget {
             onPressed: () {
               Get.to(
                 () => DetailPage(
-                  imageTag: 'shoeImage$index', // Pass the tag to DetailPage
+                  imageTag: 'shoeImage$index', 
                   imagePath: 'images/shoe_${index + 1}.jpg',
                   imageName: _shoeName[index],
                 ),

@@ -12,55 +12,55 @@ class CartPage extends StatelessWidget {
     var cart = cartController.cart;
 
     return Scaffold(
-        appBar: AppBar(
-          title: Text("Your Cart"),
-          actions: [
-            Center(
-              child: Obx(
-                () => Text(
-                  'Total: ' + cartController.cartCount.toString(),
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16.0,
-                      fontWeight: FontWeight.w500),
+      appBar: AppBar(
+        title: Text("Your Cart"),
+        actions: [
+          Center(
+            child: Obx(
+              () => Text(
+                'Total: ' + cartController.cartCount.toString(),
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.w500,
                 ),
               ),
             ),
-          ],
-        ),
-        body: ListView.builder(
-          itemCount: cart.length,
-          itemBuilder: (context, index) {
-            String cartKey = cart.keys.toList()[index];
-            String imageName = cartKey.split('_')[0];
-            int size = int.parse(cartKey.split('_')[1]);
-            int count = cart[cartKey]; //Quantity
+          ),
+        ],
+      ),
+      body: ListView.builder(
+        itemCount: cart.length,
+        itemBuilder: (context, index) {
+          String cartKey = cart.keys.toList()[index];
+          String imageName = cart[cartKey]['image'];
+          int size = cart[cartKey]['size'];
+          int count = cart[cartKey]['quantity'];
+          String imagePath = cart[cartKey]['imagePath'];
 
-            return ListTile(
-              leading: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Container(
-                  height: 100,
-                  width: 90,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage("images/shoe_${size + 1}.jpg"),
-                      fit: BoxFit.cover,
-                    ),
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                ),
+          return ListTile(
+            leading: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Image.asset(
+                imagePath,
+                width: 90,
+                height: 100,
+                fit: BoxFit.cover,
               ),
-              title: Text('Size: $size, Quantity: $count'),
-              trailing: IconButton(
-                  icon: Icon(
-                    Icons.clear,
-                  ),
-                  onPressed: () {
-                    cartController.clear(imageName, size);
-                  }),
-            );
-          },
-        ));
+            ),
+            title: Text(
+                'Shoe: $imageName, Size: $size, Quantity: $count'), // Display shoe name, size, and quantity
+            trailing: IconButton(
+              icon: Icon(
+                Icons.clear,
+              ),
+              onPressed: () {
+                cartController.clear(imageName, size);
+              },
+            ),
+          );
+        },
+      ),
+    );
   }
 }
