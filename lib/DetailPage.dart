@@ -47,7 +47,7 @@ class _DetailPageState extends State<DetailPage> {
               child: InkWell(
                 focusColor: Colors.orangeAccent,
                 highlightColor: Colors.blueAccent.withOpacity(0.5),
-                onTap: () {
+                onTap: () async {
                   Get.to(() => CartPage());
                 },
                 child: Stack(
