@@ -33,7 +33,6 @@ class CartPage extends StatelessWidget {
         itemCount: cart.length,
         itemBuilder: (context, index) {
           String cartKey = cart.keys.toList()[index];
-          String imageName = cart[cartKey]['image'];
           int size = cart[cartKey]['size'];
           int count = cart[cartKey]['quantity'];
           String imagePath = cart[cartKey]['imagePath'];
@@ -48,14 +47,13 @@ class CartPage extends StatelessWidget {
                 fit: BoxFit.cover,
               ),
             ),
-            title: Text(
-                'Shoe: $imageName, Size: $size, Quantity: $count'), // Display shoe name, size, and quantity
+            title: Text('Quantity: $count, Size: $size'),
             trailing: IconButton(
               icon: Icon(
                 Icons.clear,
               ),
               onPressed: () {
-                cartController.clear(imageName, size);
+                cartController.clear(cartKey);
               },
             ),
           );

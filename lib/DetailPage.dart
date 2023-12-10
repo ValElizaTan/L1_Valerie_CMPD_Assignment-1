@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:badges/badges.dart';
 
 import 'CartController.dart';
 import 'CartPage.dart';
@@ -18,22 +17,16 @@ class DetailPage extends StatefulWidget {
 }
 
 class _DetailPageState extends State<DetailPage> {
-  List<bool> isSelected = [
-    false,
-    false,
-    false,
-    false,
-    false
-  ]; // Selection state
-  bool isSizeSelected = false; // Track if size is selected
-  bool isQuantitySelected = false; // Track if quantity is selected
-  int selectedSizeIndex; // Define selectedSizeIndex
+  List<bool> isSelected = [false, false, false, false, false];
+  bool isSizeSelected = false;
+  bool isQuantitySelected = false;
+  String selectedSize = '';
 
   @override
   Widget build(BuildContext context) {
+    List<String> sizes = ['36', '37', '38', '39', '40'];
     //Inject GetXController
     var cartController = Get.put(CartController());
-
     return Scaffold(
       appBar: AppBar(
         title: Text('Details'),
@@ -47,15 +40,17 @@ class _DetailPageState extends State<DetailPage> {
               child: InkWell(
                 focusColor: Colors.orangeAccent,
                 highlightColor: Colors.blueAccent.withOpacity(0.5),
-                onTap: () async {
+                onTap: () {
                   Get.to(() => CartPage());
                 },
                 child: Stack(
                   children: <Widget>[
                     IconButton(
-                      icon: Icon(Icons.shopping_cart),
-                      color: Colors.white,
-                      onPressed: (isSizeSelected && isQuantitySelected)
+                      icon: Icon(
+                        Icons.shopping_cart,
+                        color: Colors.white,
+                      ),
+                      onPressed: isSizeSelected && isQuantitySelected
                           ? () {
                               Get.to(() => CartPage());
                             }
@@ -64,19 +59,27 @@ class _DetailPageState extends State<DetailPage> {
                     Positioned(
                       right: -3,
                       top: 0,
-                      child: Badge(
-                        badgeContent: Obx(
-                          () => Text(
-                            cartController.count.toString(),
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 12.0,
-                              fontWeight: FontWeight.w500,
+                      child: Stack(
+                        children: <Widget>[
+                          Icon(Icons.brightness_1,
+                              size: 20.0, color: Colors.orange),
+                          Positioned(
+                            top: 3.0,
+                            right: 7,
+                            child: Center(
+                              child: Obx(
+                                () => Text(
+                                  cartController.count.toString(),
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 12.0,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
-                        ),
-                        position: BadgePosition.topEnd(top: 3, end: 7),
-                        badgeColor: Colors.orange,
+                        ],
                       ),
                     ),
                   ],
@@ -96,7 +99,6 @@ class _DetailPageState extends State<DetailPage> {
           Container(
             alignment: Alignment.center,
             child: Hero(
-              // received tag for Hero animation
               tag: widget.imageTag,
               child: Image.asset(
                 widget.imagePath,
@@ -150,8 +152,8 @@ class _DetailPageState extends State<DetailPage> {
                           buttonIndex++) {
                         isSelected[buttonIndex] = buttonIndex == index;
                       }
-                      selectedSizeIndex = index + 36;
                       isSizeSelected = true;
+                      selectedSize = sizes[index];
                     });
                   },
                   fillColor: Colors.blue,
@@ -185,15 +187,14 @@ class _DetailPageState extends State<DetailPage> {
                 IconButton(
                   icon: Icon(Icons.add),
                   onPressed: () {
-                    if (selectedSizeIndex != null) {
-                      // Add item to cart
-                      cartController.addToCart(
-                          widget.imageName,
-                          selectedSizeIndex,
-                          1,
-                          widget
-                              .imagePath); 
+                    if (isSizeSelected) {
                       setState(() {
+                        cartController.addToCart(
+                          widget.imageName,
+                          int.parse(selectedSize),
+                          1,
+                          widget.imagePath,
+                        );
                         isQuantitySelected = true;
                       });
                     }
@@ -203,11 +204,11 @@ class _DetailPageState extends State<DetailPage> {
                   padding: EdgeInsets.all(8),
                   child: Obx(
                     () {
-                      final quantity = cartController.cart[widget.imageName];
+                      final cartKey = '${widget.imageName}${selectedSize}';
+                      final quantity = cartController.cart[cartKey];
                       return Text(
-                        (quantity ?? 0).toString(),
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
+                        (quantity != null ? quantity['quantity'] : 0)
+                            .toString(),
                       );
                     },
                   ),
@@ -215,10 +216,7 @@ class _DetailPageState extends State<DetailPage> {
                 IconButton(
                   icon: Icon(Icons.remove),
                   onPressed: () {
-                    if (selectedSizeIndex != null) {
-                      // Remove 1 item from cart
-                      cartController.clear(widget.imageName, selectedSizeIndex);
-                    }
+                    cartController.clear(widget.imageName);
                   },
                 ),
               ],
@@ -233,7 +231,7 @@ class _DetailPageState extends State<DetailPage> {
     return Container(
       decoration: BoxDecoration(
         border: Border.all(
-          color: Colors.grey, // Border color for unselected images
+          color: Colors.grey,
         ),
         color: isSelected[size - 36] ? Colors.blue : Colors.transparent,
       ),
@@ -241,7 +239,7 @@ class _DetailPageState extends State<DetailPage> {
         padding: const EdgeInsets.all(8.0),
         child: Image.asset(
           imagePath,
-          width: 35, // Adjust the width and height of the images
+          width: 35,
           height: 35,
           fit: BoxFit.contain,
         ),
