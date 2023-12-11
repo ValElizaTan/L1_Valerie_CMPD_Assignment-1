@@ -204,7 +204,7 @@ class _DetailPageState extends State<DetailPage> {
                   padding: EdgeInsets.all(8),
                   child: Obx(
                     () {
-                      final cartKey = '${widget.imageName}${selectedSize}';
+                      final cartKey = '${widget.imageName}$selectedSize';
                       final quantity = cartController.cart[cartKey];
                       return Text(
                         (quantity != null ? quantity['quantity'] : 0)
