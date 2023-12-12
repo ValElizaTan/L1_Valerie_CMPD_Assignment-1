@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'CartController.dart';
+import 'ProductPage.dart';
 
 class CartPage extends StatelessWidget {
   CartPage({Key key}) : super(key: key);
@@ -13,16 +14,24 @@ class CartPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              Get.to(() => ProductPage());
+            }),
         title: Text("Your Cart"),
         actions: [
           Center(
             child: Obx(
-              () => Text(
-                'Total: ' + cartController.cartCount.toString(),
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 16.0,
-                  fontWeight: FontWeight.w500,
+              () => Padding(
+                padding: EdgeInsets.only(right: 10),
+                child: Text(
+                  'Total: ' + cartController.cartCount.toString(),
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
               ),
             ),
@@ -31,7 +40,7 @@ class CartPage extends StatelessWidget {
       ),
       body: Obx(
         () => ListView.builder(
-          itemCount: cart.length,
+          itemCount: cartController.cart.length,
           itemBuilder: (context, index) {
             String cartKey = cart.keys.toList()[index];
             int size = cart[cartKey]['size'];

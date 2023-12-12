@@ -139,18 +139,16 @@ class _DetailPageState extends State<DetailPage> {
                 ),
                 ToggleButtons(
                   children: [
-                    buildSizeImage('images/size_36.png', 36),
-                    buildSizeImage('images/size_37.png', 37),
-                    buildSizeImage('images/size_38.png', 38),
-                    buildSizeImage('images/size_39.png', 39),
-                    buildSizeImage('images/size_40.png', 40),
+                    _buildSizeImage('images/size_36.png', 36),
+                    _buildSizeImage('images/size_37.png', 37),
+                    _buildSizeImage('images/size_38.png', 38),
+                    _buildSizeImage('images/size_39.png', 39),
+                    _buildSizeImage('images/size_40.png', 40),
                   ],
                   isSelected: isSelected,
                   onPressed: (int index) {
                     setState(() {
-                      for (int i = 0;
-                          i < isSelected.length;
-                          i++) {
+                      for (int i = 0; i < isSelected.length; i++) {
                         isSelected[i] = i == index;
                       }
                       isSizeSelected = true;
@@ -210,6 +208,10 @@ class _DetailPageState extends State<DetailPage> {
                       return Text(
                         (quantity != null ? quantity['quantity'] : 0)
                             .toString(),
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600,
+                        ),
                       );
                     },
                   ),
@@ -229,7 +231,7 @@ class _DetailPageState extends State<DetailPage> {
     );
   }
 
-  Widget buildSizeImage(String imagePath, int size) {
+  Widget _buildSizeImage(String imagePath, int size) {
     return Container(
       decoration: BoxDecoration(
         border: Border.all(
