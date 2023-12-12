@@ -63,7 +63,7 @@ class ProductPage extends StatelessWidget {
       ),
       child: Row(
         children: [
-          //Image with Hero animation
+          //  Image with Hero animation
           Hero(
             tag: 'shoeImage$index',
             child: Padding(
@@ -98,7 +98,7 @@ class ProductPage extends StatelessWidget {
             ),
           ),
           Spacer(),
-          //Text
+          //  Text
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

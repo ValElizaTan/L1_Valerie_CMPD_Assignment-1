@@ -47,24 +47,72 @@ class CartPage extends StatelessWidget {
             int count = cart[cartKey]['quantity'];
             String imagePath = cart[cartKey]['imagePath'];
 
-            return ListTile(
-              leading: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Image.asset(
-                  imagePath,
-                  width: 90,
-                  height: 100,
-                  fit: BoxFit.cover,
-                ),
+            return Card(
+              color: Colors.cyan[100],
+              elevation: 5,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
               ),
-              title: Text('Quantity: $count, Size: $size'),
-              trailing: IconButton(
-                icon: Icon(
-                  Icons.clear,
-                ),
-                onPressed: () {
-                  cartController.clear(cartKey);
-                },
+              child: Row(
+                children: [
+                  //  Image
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      height: 140,
+                      width: 150,
+                      decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: AssetImage(imagePath),
+                            fit: BoxFit.fitWidth,
+                          ),
+                          borderRadius: BorderRadius.circular(12),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black38,
+                              offset: const Offset(
+                                2.0,
+                                2.0,
+                              ),
+                              blurRadius: 5.0,
+                              spreadRadius: 1.0,
+                            ),
+                            BoxShadow(
+                              color: Colors.grey,
+                              offset: const Offset(0.0, 0.0),
+                              blurRadius: 0.0,
+                              spreadRadius: 0.0,
+                            ),
+                          ]),
+                    ),
+                  ),
+                  Spacer(),
+                  //  Text
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Quantity: $count',
+                        style: TextStyle(
+                            fontSize: 16.0, fontWeight: FontWeight.w500),
+                      ),
+                      Text(
+                        'Size: $size',
+                        style: TextStyle(
+                            fontSize: 16.0, fontWeight: FontWeight.w500),
+                      ),
+                    ],
+                  ),
+                  Spacer(),
+                  IconButton(
+                    icon: Icon(
+                      Icons.clear,
+                    ),
+                    onPressed: () {
+                      cartController.clear(cartKey);
+                    },
+                  ),
+                ],
               ),
             );
           },
