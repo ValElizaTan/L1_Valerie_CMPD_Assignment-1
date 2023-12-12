@@ -24,11 +24,25 @@ class CartController extends GetxController {
     update();
   }
 
-  void clear(String cartKey) {
-    _cart[cartKey]['quantity']--;
-    if (_cart[cartKey]['quantity'] == 0) {
-      _cart.remove(cartKey);
+  void remove(String imageName, String selectedSize) {
+    String cartKey = '$imageName$selectedSize';
+    if (_cart.containsKey(cartKey)) {
+      if (_cart[cartKey]['quantity'] > 0) {
+        // Remove 1 item from the cart
+        _cart[cartKey]['quantity']--;
+        if (_cart[cartKey]['quantity'] == 0) {
+          // Remove ALL item from cart
+          _cart.remove(cartKey);
+        }
+        update();
+      }
     }
-    update();
+  }
+
+  void clear(String cartKey) {
+    if (_cart.containsKey(cartKey)) {
+      _cart.remove(cartKey);
+      update();
+    }
   }
 }

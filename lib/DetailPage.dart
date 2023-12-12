@@ -17,21 +17,24 @@ class DetailPage extends StatefulWidget {
 }
 
 class _DetailPageState extends State<DetailPage> {
+  //  ToggleBTN shoesize
   List<bool> isSelected = [false, false, false, false, false];
+  //  Shoesize selected
   bool isSizeSelected = false;
+  //  Quantity selected
   bool isQuantitySelected = false;
   String selectedSize = '';
 
   @override
   Widget build(BuildContext context) {
     List<String> sizes = ['36', '37', '38', '39', '40'];
-    //Inject GetXController
+    //  Inject GetXController
     var cartController = Get.put(CartController());
     return Scaffold(
       appBar: AppBar(
         title: Text('Details'),
         actions: <Widget>[
-          //the orange circle
+          //  The orange circle
           Padding(
             padding: const EdgeInsets.all(10.0),
             child: Container(
@@ -69,7 +72,7 @@ class _DetailPageState extends State<DetailPage> {
                             child: Center(
                               child: Obx(
                                 () => Text(
-                                  cartController.count.toString(),
+                                  cartController.cartCount.toString(),
                                   style: TextStyle(
                                     color: Colors.black,
                                     fontSize: 12.0,
@@ -94,8 +97,7 @@ class _DetailPageState extends State<DetailPage> {
           SizedBox(
             height: 30,
           ),
-
-          //Image
+          //  Image
           Container(
             alignment: Alignment.center,
             child: Hero(
@@ -119,8 +121,7 @@ class _DetailPageState extends State<DetailPage> {
               ),
             ),
           ),
-
-          //ShoeSize
+          //  ShoeSize
           Container(
             margin: const EdgeInsets.only(top: 20),
             child: Row(
@@ -147,10 +148,10 @@ class _DetailPageState extends State<DetailPage> {
                   isSelected: isSelected,
                   onPressed: (int index) {
                     setState(() {
-                      for (int buttonIndex = 0;
-                          buttonIndex < isSelected.length;
-                          buttonIndex++) {
-                        isSelected[buttonIndex] = buttonIndex == index;
+                      for (int i = 0;
+                          i < isSelected.length;
+                          i++) {
+                        isSelected[i] = i == index;
                       }
                       isSizeSelected = true;
                       selectedSize = sizes[index];
@@ -216,7 +217,8 @@ class _DetailPageState extends State<DetailPage> {
                 IconButton(
                   icon: Icon(Icons.remove),
                   onPressed: () {
-                    cartController.clear(widget.imageName);
+                    cartController.remove(widget.imageName, selectedSize);
+                    setState(() {});
                   },
                 ),
               ],

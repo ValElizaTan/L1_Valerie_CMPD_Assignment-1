@@ -29,35 +29,37 @@ class CartPage extends StatelessWidget {
           ),
         ],
       ),
-      body: ListView.builder(
-        itemCount: cart.length,
-        itemBuilder: (context, index) {
-          String cartKey = cart.keys.toList()[index];
-          int size = cart[cartKey]['size'];
-          int count = cart[cartKey]['quantity'];
-          String imagePath = cart[cartKey]['imagePath'];
+      body: Obx(
+        () => ListView.builder(
+          itemCount: cart.length,
+          itemBuilder: (context, index) {
+            String cartKey = cart.keys.toList()[index];
+            int size = cart[cartKey]['size'];
+            int count = cart[cartKey]['quantity'];
+            String imagePath = cart[cartKey]['imagePath'];
 
-          return ListTile(
-            leading: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Image.asset(
-                imagePath,
-                width: 90,
-                height: 100,
-                fit: BoxFit.cover,
+            return ListTile(
+              leading: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Image.asset(
+                  imagePath,
+                  width: 90,
+                  height: 100,
+                  fit: BoxFit.cover,
+                ),
               ),
-            ),
-            title: Text('Quantity: $count, Size: $size'),
-            trailing: IconButton(
-              icon: Icon(
-                Icons.clear,
+              title: Text('Quantity: $count, Size: $size'),
+              trailing: IconButton(
+                icon: Icon(
+                  Icons.clear,
+                ),
+                onPressed: () {
+                  cartController.clear(cartKey);
+                },
               ),
-              onPressed: () {
-                cartController.clear(cartKey);
-              },
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }
