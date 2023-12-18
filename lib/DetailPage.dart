@@ -17,6 +17,7 @@ class DetailPage extends StatefulWidget {
 }
 
 class _DetailPageState extends State<DetailPage> {
+  List<String> sizes = ['36', '37', '38', '39', '40'];
   //  ToggleBTN shoesize
   List<bool> isSelected = [false, false, false, false, false];
   //  Shoesize selected
@@ -27,7 +28,6 @@ class _DetailPageState extends State<DetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    List<String> sizes = ['36', '37', '38', '39', '40'];
     //  Inject GetXController
     var cartController = Get.put(CartController());
     return Scaffold(
@@ -138,13 +138,10 @@ class _DetailPageState extends State<DetailPage> {
                   ),
                 ),
                 ToggleButtons(
-                  children: [
-                    _buildSizeImage('images/size_36.png', 36),
-                    _buildSizeImage('images/size_37.png', 37),
-                    _buildSizeImage('images/size_38.png', 38),
-                    _buildSizeImage('images/size_39.png', 39),
-                    _buildSizeImage('images/size_40.png', 40),
-                  ],
+                  children: List.generate(
+                    sizes.length,
+                    (index) => _buildSizeToggleButton(index),
+                  ),
                   isSelected: isSelected,
                   onPressed: (int index) {
                     setState(() {
@@ -231,22 +228,14 @@ class _DetailPageState extends State<DetailPage> {
     );
   }
 
-  Widget _buildSizeImage(String imagePath, int size) {
-    return Container(
-      decoration: BoxDecoration(
-        border: Border.all(
-          color: Colors.grey,
-        ),
-        color: isSelected[size - 36] ? Colors.blue : Colors.transparent,
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Image.asset(
-          imagePath,
-          width: 35,
-          height: 35,
-          fit: BoxFit.contain,
-        ),
+  Widget _buildSizeToggleButton(int index) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Image.asset(
+        'images/size_${sizes[index]}.png',
+        width: 35,
+        height: 35,
+        fit: BoxFit.contain,
       ),
     );
   }

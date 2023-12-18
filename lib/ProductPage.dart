@@ -35,16 +35,6 @@ class ProductPage extends StatelessWidget {
           return InkWell(
             splashColor: Colors.blueAccent,
             highlightColor: Colors.blueAccent.withOpacity(1.0),
-            onTap: () {
-              Get.to(
-                () => DetailPage(
-                  // Pass tag to DetailPage
-                  imageTag: 'shoeImage$index', 
-                  imagePath: 'images/shoe_${index + 1}.jpg',
-                  imageName: _shoeName[index],
-                ),
-              );
-            },
             child: _buildGridCards(index, 'images/shoe_${index + 1}.jpg',
                 _shoeName[index], _shoePrice[index]),
           );
