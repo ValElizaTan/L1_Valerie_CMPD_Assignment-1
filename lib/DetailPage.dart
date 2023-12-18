@@ -1,3 +1,5 @@
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -27,6 +29,29 @@ class _DetailPageState extends State<DetailPage> {
   String selectedSize = '';
 
   @override
+  void initState() {
+    super.initState();
+    // Load the selected size when the page initializes
+    loadSelectedSize();
+  }
+
+  // Function to load the selected size from SharedPreferences
+  Future<void> loadSelectedSize() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      selectedSize =
+          prefs.getString('selectedSize') ?? ''; // Retrieve the selected size
+      isSizeSelected = selectedSize
+          .isNotEmpty; // Set isSizeSelected based on whether a size is selected
+    });
+  }
+
+  // Function to save the selected size to SharedPreferences
+  Future<void> saveSelectedSize(String size) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('selectedSize', size); // Save the selected size
+  }
+
   Widget build(BuildContext context) {
     //  Inject GetXController
     var cartController = Get.put(CartController());
@@ -34,58 +59,35 @@ class _DetailPageState extends State<DetailPage> {
       appBar: AppBar(
         title: Text('Details'),
         actions: <Widget>[
-          //  The orange circle
           Padding(
             padding: const EdgeInsets.all(10.0),
-            child: Container(
-              height: 150.0,
-              width: 30.0,
-              child: InkWell(
-                focusColor: Colors.orangeAccent,
-                highlightColor: Colors.blueAccent.withOpacity(0.5),
-                onTap: () {
-                  Get.to(() => CartPage());
-                },
-                child: Stack(
-                  children: <Widget>[
-                    IconButton(
-                      icon: Icon(
-                        Icons.shopping_cart,
-                        color: Colors.white,
-                      ),
-                      onPressed: isSizeSelected && isQuantitySelected
-                          ? () {
-                              Get.to(() => CartPage());
-                            }
-                          : null,
-                    ),
-                    Positioned(
-                      right: -3,
-                      top: 0,
-                      child: Stack(
-                        children: <Widget>[
-                          Icon(Icons.brightness_1,
-                              size: 20.0, color: Colors.orange),
-                          Positioned(
-                            top: 3.0,
-                            right: 7,
-                            child: Center(
-                              child: Obx(
-                                () => Text(
-                                  cartController.cartCount.toString(),
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 12.0,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+            //  Orange Btn
+            child: Badge(
+              toAnimate: true,
+              badgeColor: Colors.orange.withOpacity(1),
+              position: BadgePosition.topEnd(top: 0, end: 5),
+              badgeContent: Obx(
+                () => Text(
+                  cartController.cartCount.toString(),
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 12.0,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+              child: Opacity(
+                opacity: isSizeSelected && isQuantitySelected ? 1.0 : 0.5,
+                child: IconButton(
+                  icon: Icon(
+                    Icons.shopping_cart,
+                    color: Colors.white,
+                  ),
+                  onPressed: isSizeSelected && isQuantitySelected
+                      ? () {
+                          Get.to(() => CartPage());
+                        }
+                      : null,
                 ),
               ),
             ),
@@ -143,14 +145,16 @@ class _DetailPageState extends State<DetailPage> {
                     (index) => _buildSizeToggleButton(index),
                   ),
                   isSelected: isSelected,
-                  onPressed: (int index) {
+                  onPressed: (int index) async {
                     setState(() {
                       for (int i = 0; i < isSelected.length; i++) {
                         isSelected[i] = i == index;
                       }
-                      isSizeSelected = true;
                       selectedSize = sizes[index];
+                      isSizeSelected = true;
                     });
+                    await saveSelectedSize(
+                        selectedSize); // Save the selected size when a new size is chosen
                   },
                   fillColor: Colors.blue,
                   selectedColor: Colors.white,
@@ -200,7 +204,7 @@ class _DetailPageState extends State<DetailPage> {
                   padding: EdgeInsets.all(8),
                   child: Obx(
                     () {
-                      final cartKey = '${widget.imageName}$selectedSize';
+                      final cartKey = '${widget.imageName}';
                       final quantity = cartController.cart[cartKey];
                       return Text(
                         (quantity != null ? quantity['quantity'] : 0)
@@ -216,7 +220,7 @@ class _DetailPageState extends State<DetailPage> {
                 IconButton(
                   icon: Icon(Icons.remove),
                   onPressed: () {
-                    cartController.remove(widget.imageName, selectedSize);
+                    cartController.remove(widget.imageName);
                     setState(() {});
                   },
                 ),

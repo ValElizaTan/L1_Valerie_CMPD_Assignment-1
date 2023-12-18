@@ -10,22 +10,27 @@ class CartController extends GetxController {
 
   // Business logic
   void addToCart(String imageName, int size, int quantity, String imagePath) {
-    String cartKey = '$imageName$size';
+    String cartKey = '$imageName';
     if (_cart.containsKey(cartKey)) {
-      _cart[cartKey]['quantity'] += 1;
+      if (_cart[cartKey]['size'] == size) {
+        _cart[cartKey]['quantity'] += quantity;
+      } else {
+        _cart[cartKey]['size'] = size;
+        _cart[cartKey]['quantity'] = quantity;
+      }
     } else {
       _cart[cartKey] = {
         'imageName': imageName,
         'size': size,
-        'quantity': 1,
+        'quantity': quantity,
         'imagePath': imagePath,
       };
     }
     update();
   }
 
-  void remove(String imageName, String selectedSize) {
-    String cartKey = '$imageName$selectedSize';
+  void remove(String imageName) {
+    String cartKey = '$imageName';
     if (_cart.containsKey(cartKey)) {
       if (_cart[cartKey]['quantity'] > 0) {
         // Remove 1 item from the cart
