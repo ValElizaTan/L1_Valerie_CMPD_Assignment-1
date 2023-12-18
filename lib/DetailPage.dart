@@ -31,25 +31,20 @@ class _DetailPageState extends State<DetailPage> {
   @override
   void initState() {
     super.initState();
-    // Load the selected size when the page initializes
     loadSelectedSize();
   }
 
-  // Function to load the selected size from SharedPreferences
   Future<void> loadSelectedSize() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      selectedSize =
-          prefs.getString('selectedSize') ?? ''; // Retrieve the selected size
-      isSizeSelected = selectedSize
-          .isNotEmpty; // Set isSizeSelected based on whether a size is selected
+      selectedSize = prefs.getString('selectedSize') ?? '';
+      isSizeSelected = selectedSize.isNotEmpty;
     });
   }
 
-  // Function to save the selected size to SharedPreferences
   Future<void> saveSelectedSize(String size) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('selectedSize', size); // Save the selected size
+    await prefs.setString('selectedSize', size);
   }
 
   Widget build(BuildContext context) {
@@ -153,8 +148,7 @@ class _DetailPageState extends State<DetailPage> {
                       selectedSize = sizes[index];
                       isSizeSelected = true;
                     });
-                    await saveSelectedSize(
-                        selectedSize); // Save the selected size when a new size is chosen
+                    await saveSelectedSize(selectedSize);
                   },
                   fillColor: Colors.blue,
                   selectedColor: Colors.white,
