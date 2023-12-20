@@ -50,4 +50,13 @@ class CartController extends GetxController {
       update();
     }
   }
+
+  int getQuantity(String imageName) {
+    String cartKey = '$imageName';
+    if (_cart.containsKey(cartKey)) {
+      return _cart[cartKey]['quantity'];
+    } else {
+      return 0;
+    }
+  }
 }

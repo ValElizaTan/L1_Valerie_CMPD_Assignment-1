@@ -147,9 +147,27 @@ class _DetailPageState extends State<DetailPage> {
                       }
                       selectedSize = sizes[index];
                       isSizeSelected = true;
+                      if (isQuantitySelected) {
+                        cartController.addToCart(
+                          widget.imageName,
+                          int.parse(selectedSize),
+                          cartController.getQuantity(widget.imageName),
+                          widget.imagePath,
+                        );
+                      }
                     });
                     await saveSelectedSize(selectedSize);
                   },
+                  /* onPressed: (int index) async {
+                    setState(() {
+                      for (int i = 0; i < isSelected.length; i++) {
+                        isSelected[i] = i == index;
+                      }
+                      selectedSize = sizes[index];
+                      isSizeSelected = true;
+                    });
+                    await saveSelectedSize(selectedSize);
+                  }, */
                   fillColor: Colors.blue,
                   selectedColor: Colors.white,
                   constraints: const BoxConstraints(
