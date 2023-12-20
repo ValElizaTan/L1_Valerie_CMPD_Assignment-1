@@ -29,6 +29,7 @@ class _DetailPageState extends State<DetailPage> {
   String selectedSize = '';
 
   @override
+  //  SharedPreference: store user data
   void initState() {
     super.initState();
     loadSelectedSize();
@@ -39,6 +40,14 @@ class _DetailPageState extends State<DetailPage> {
     setState(() {
       selectedSize = prefs.getString('selectedSize') ?? '';
       isSizeSelected = selectedSize.isNotEmpty;
+
+      // Update Selected based on Size
+      if (isSizeSelected) {
+        int selectedIndex = sizes.indexOf(selectedSize);
+        for (int i = 0; i < isSelected.length; i++) {
+          isSelected[i] = i == selectedIndex;
+        }
+      }
     });
   }
 
@@ -50,15 +59,15 @@ class _DetailPageState extends State<DetailPage> {
   Widget build(BuildContext context) {
     //  Inject GetXController
     var cartController = Get.put(CartController());
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Details'),
         actions: <Widget>[
           Padding(
             padding: const EdgeInsets.all(10.0),
-            //  Orange Btn
+            //  Orange Btn + Cart Icon
             child: Badge(
-              toAnimate: true,
               badgeColor: Colors.orange.withOpacity(1),
               position: BadgePosition.topEnd(top: 0, end: 5),
               badgeContent: Obx(
@@ -71,19 +80,18 @@ class _DetailPageState extends State<DetailPage> {
                   ),
                 ),
               ),
-              child: Opacity(
-                opacity: isSizeSelected && isQuantitySelected ? 1.0 : 0.5,
-                child: IconButton(
-                  icon: Icon(
-                    Icons.shopping_cart,
-                    color: Colors.white,
-                  ),
-                  onPressed: isSizeSelected && isQuantitySelected
-                      ? () {
-                          Get.to(() => CartPage());
-                        }
-                      : null,
+              child: IconButton(
+                icon: Icon(
+                  Icons.shopping_cart,
+                  color: isSizeSelected && isQuantitySelected
+                      ? Colors.white
+                      : Colors.black38,
                 ),
+                onPressed: isSizeSelected && isQuantitySelected
+                    ? () {
+                        Get.to(() => CartPage());
+                      }
+                    : null,
               ),
             ),
           ),
@@ -94,6 +102,7 @@ class _DetailPageState extends State<DetailPage> {
           SizedBox(
             height: 30,
           ),
+
           //  Image
           Container(
             alignment: Alignment.center,
@@ -107,6 +116,8 @@ class _DetailPageState extends State<DetailPage> {
               ),
             ),
           ),
+
+          //  Image Name
           Padding(
             padding: EdgeInsets.all(20),
             child: Text(
@@ -118,7 +129,8 @@ class _DetailPageState extends State<DetailPage> {
               ),
             ),
           ),
-          //  ShoeSize
+
+          //  Shoe Size
           Container(
             margin: const EdgeInsets.only(top: 20),
             child: Row(
@@ -158,16 +170,6 @@ class _DetailPageState extends State<DetailPage> {
                     });
                     await saveSelectedSize(selectedSize);
                   },
-                  /* onPressed: (int index) async {
-                    setState(() {
-                      for (int i = 0; i < isSelected.length; i++) {
-                        isSelected[i] = i == index;
-                      }
-                      selectedSize = sizes[index];
-                      isSizeSelected = true;
-                    });
-                    await saveSelectedSize(selectedSize);
-                  }, */
                   fillColor: Colors.blue,
                   selectedColor: Colors.white,
                   constraints: const BoxConstraints(
@@ -179,7 +181,7 @@ class _DetailPageState extends State<DetailPage> {
             ),
           ),
 
-          //Quantity
+          //  Quantity container
           Container(
             margin: const EdgeInsets.only(top: 20),
             child: Row(
@@ -196,6 +198,8 @@ class _DetailPageState extends State<DetailPage> {
                     ),
                   ),
                 ),
+
+                //  Add Btn
                 IconButton(
                   icon: Icon(Icons.add),
                   onPressed: () {
@@ -212,6 +216,8 @@ class _DetailPageState extends State<DetailPage> {
                     }
                   },
                 ),
+
+                //  Qty No.
                 Padding(
                   padding: EdgeInsets.all(8),
                   child: Obx(
@@ -229,6 +235,8 @@ class _DetailPageState extends State<DetailPage> {
                     },
                   ),
                 ),
+
+                //  Remove Btn
                 IconButton(
                   icon: Icon(Icons.remove),
                   onPressed: () {
@@ -244,6 +252,7 @@ class _DetailPageState extends State<DetailPage> {
     );
   }
 
+  //  Image in Toggle Btn
   Widget _buildSizeToggleButton(int index) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
