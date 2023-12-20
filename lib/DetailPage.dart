@@ -85,7 +85,7 @@ class _DetailPageState extends State<DetailPage> {
                   Icons.shopping_cart,
                   color: isSizeSelected && isQuantitySelected
                       ? Colors.white
-                      : Colors.black38,
+                      : Colors.black26,
                 ),
                 onPressed: isSizeSelected && isQuantitySelected
                     ? () {

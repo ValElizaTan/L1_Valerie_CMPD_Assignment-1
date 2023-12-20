@@ -17,7 +17,7 @@ class CartPage extends StatelessWidget {
         leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {
-              Get.off(() => ProductPage());
+              Get.to(() => ProductPage());
             }),
         title: Text("Your Cart"),
         actions: [
