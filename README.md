@@ -2,6 +2,12 @@
 
 A small Flutter shopping app for sneakers. You browse a product list, open a shoe to see it larger, pick your size (36–40), add it to your cart and manage the quantities. Built as Assignment 1 for the CMPD module (Module Group L1) at Nanyang Polytechnic.
 
+## Demo
+
+https://github.com/user-attachments/assets/8cded35c-9718-4158-9add-892c2ce6bd02
+
+*Browsing the sneaker list, picking a shoe size, adding and removing quantities, and checking the cart. (0:54)*
+
 ## Features
 
 - **Product list:** six sneakers with image, name and price:
@@ -54,4 +60,4 @@ flutter run
 
 ## Author
 
-Valerie Tan Wan Xin – Nanyang Polytechnic, L1_Valerie_CMPD_Assignment 1
+Valerie Tan Wan Xin – Nanyang Polytechnic, Module Group L1
